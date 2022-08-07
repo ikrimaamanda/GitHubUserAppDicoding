@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">GitHubUserAppDicoding</string>
+    <string name="default_text_name_of_github_user">Name of Github User</string>
+    <string name="default_username_of_github_user">Username of Github User</string>
+    <string name="image">IMAGE</string>
+    <string name="repositories">Repositories 0</string>
+    <string name="amount_followers">0 followers</string>
+    <string name="amount_following">0 following</string>
+    <string name="default_location">Jakarta, Indonesia</string>
+    <string name="default_company">Company</string>
+    <string name="title_app">Github User App</string>
 </resources>
