@@ -9,4 +9,6 @@
     <string name="default_location">Jakarta, Indonesia</string>
     <string name="default_company">Company</string>
     <string name="title_app">Github User App</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Masukkan username</string>
 </resources>
