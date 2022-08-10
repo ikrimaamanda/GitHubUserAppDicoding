@@ -19,10 +19,9 @@ interface GitHubUserApiServices {
     @GET("/users")
     fun getAllUsers() : Call<List<DetailUserResponse>>
 
-    @GET("/users/{username}/followers")
-    fun getListFollowers(@Path("username") username : String) : Call<List<DetailUserResponse>>
-
-    @GET("/users/{username}/following")
-    fun getListFollowing(@Path("username") username : String) : Call<List<DetailUserResponse>>
+    @GET("/users/{username}/{type}")
+    fun getListUserByType(@Path("username") username : String,
+                          @Path("type") type : String
+    ) : Call<List<DetailUserResponse>>
 
 }

@@ -14,6 +14,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GITHUB_API_KEY", '"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"')
+
     }
 
     buildTypes {
@@ -59,7 +62,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
     // okhttp3
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
     // Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'

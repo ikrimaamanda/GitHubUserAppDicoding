@@ -205,12 +205,12 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
         }
     }
 
-    fun getFollowers(username: String) {
+    fun getFollowers(username: String, type : String) {
         listFollowers.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    service.getListFollowers(username)
+                    service.getListUserByType(username, type)
                 }
 
                 result.enqueue(object : Callback<List<DetailUserResponse>> {
@@ -258,12 +258,12 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
     }
 
-    fun getFollowing(username: String) {
+    fun getFollowing(username: String, type : String) {
         listFollowing.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    service.getListFollowing(username)
+                    service.getListUserByType(username, type)
                 }
 
                 result.enqueue(object : Callback<List<DetailUserResponse>> {

@@ -56,7 +56,7 @@ class FollowingFragment : Fragment() {
 
         viewModel.apply {
             setGitHubApiService(service)
-            getFollowing(USERNAME)
+            getFollowing(USERNAME, "following")
         }
 
     }

@@ -4,18 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.ikrima.practice.dicoding.githubuserappdicoding.data.retrofit.TokenAuthGithub
+import com.ikrima.practice.dicoding.githubuserappdicoding.BuildConfig
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ActivityMainBinding
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.activities.GitHubUsersActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.sharedpreference.Constant
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.sharedpreference.PreferencesHelper
 
 class MainActivity : AppCompatActivity() {
-
-
-    companion object {
-        private const val splashDuration = 2000
-    }
 
     private lateinit var binding : ActivityMainBinding
 
@@ -26,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPref = PreferencesHelper(this)
-        sharedPref.putValueString(Constant.prefTokenGithub, TokenAuthGithub.tokenGithubUser)
+        sharedPref.putValueString(Constant.prefTokenGithub, BuildConfig.GITHUB_API_KEY)
 
         showLogo()
     }
@@ -43,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         val i = Intent(this, GitHubUsersActivity::class.java)
         startActivity(i)
         finish()
+    }
+
+
+    companion object {
+        private const val splashDuration = 2000
     }
 
 }

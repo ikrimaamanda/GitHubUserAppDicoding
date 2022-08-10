@@ -1,6 +1,7 @@
 package com.ikrima.practice.dicoding.githubuserappdicoding.data.retrofit
 
 import android.content.Context
+import com.ikrima.practice.dicoding.githubuserappdicoding.BuildConfig
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.remote.UrlEndPoint
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,7 +15,12 @@ object ApiConfig {
 
     private fun providenHttpLoggingInterceptor() = run {
         HttpLoggingInterceptor().apply {
-            apply { level = HttpLoggingInterceptor.Level.BODY }
+
+            apply { level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else HttpLoggingInterceptor.Level.NONE
+
+            }
         }
     }
 
