@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.StringRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ikrima.practice.dicoding.githubuserappdicoding.R
 import com.ikrima.practice.dicoding.githubuserappdicoding.base.BaseActivityViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
@@ -23,6 +25,14 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     private lateinit var list : DetailUserResponse
     private var username = ""
 
+    companion object {
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.followers,
+            R.string.following
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setViewModel = ViewModelProvider(this)[GitHubUserViewModel::class.java]
         super.onCreate(savedInstanceState)
@@ -34,9 +44,11 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
         settingViewModel()
 
-//        setProfile()
-
         subscribeDetailUser()
+
+        settingViewPager()
+
+        sendDataToFragment()
 
     }
 
@@ -47,8 +59,7 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
     private fun settingViewModel() {
         viewModel.apply {
-            setGitHubApiServic(service)
-            setSharedPref(sharedPref)
+            setGitHubApiService(service)
             getDetailUser(username)
         }
     }
@@ -69,7 +80,6 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                         Toast.makeText(this@DetailGithubUserActivity, it.title, Toast.LENGTH_SHORT).show()
                     }
                     is ResultWrapper.Loading -> {
-                        // setting progressbar
                         progressBar.visibility = View.VISIBLE
                     }
                     is ResultWrapper.Success -> {
@@ -127,6 +137,25 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                 }
             }
         }
+    }
+
+
+    private fun settingViewPager() {
+        binding.apply {
+            val detailUserPagerAdapter = DetailUserPagerAdapter(this@DetailGithubUserActivity)
+
+            viewPager.adapter = detailUserPagerAdapter
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
+
+            supportActionBar?.elevation = 0f
+        }
+    }
+
+    private fun sendDataToFragment() {
+        FollowersFragment.USERNAME = list.username?:"Kosong"
+        FollowingFragment.USERNAME = list.username?:"Kosong"
     }
 
 }

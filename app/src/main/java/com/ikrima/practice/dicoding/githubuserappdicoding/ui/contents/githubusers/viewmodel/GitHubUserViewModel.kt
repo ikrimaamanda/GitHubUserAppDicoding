@@ -7,7 +7,6 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailU
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.SearchUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.retrofit.GitHubUserApiServices
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWrapper
-import com.ikrima.practice.dicoding.githubuserappdicoding.utils.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,11 +17,13 @@ import kotlin.coroutines.CoroutineContext
 class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
     private lateinit var service : GitHubUserApiServices
-    private lateinit var sharedPref : PreferencesHelper
 
     val userData = MutableLiveData<ResultWrapper<Any>>()
     val listSearchUser = MutableLiveData<ResultWrapper<List<Any>>>()
     val listAllUser = MutableLiveData<ResultWrapper<List<Any>>>()
+
+    val listFollowers = MutableLiveData<ResultWrapper<List<Any>>>()
+    val listFollowing = MutableLiveData<ResultWrapper<List<Any>>>()
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
@@ -32,21 +33,16 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
         userData.value = ResultWrapper.default()
         listSearchUser.value = ResultWrapper.default()
         listAllUser.value = ResultWrapper.default()
+        listFollowers.value = ResultWrapper.default()
+        listFollowing.value = ResultWrapper.default()
     }
 
 
     /*
     * This method to set eureka api service
     * */
-    fun setGitHubApiServic(service : GitHubUserApiServices) {
+    fun setGitHubApiService(service : GitHubUserApiServices) {
         this.service = service
-    }
-
-    /*
-    * This method to set shared preferences
-    * */
-    fun setSharedPref(sharedPref : PreferencesHelper) {
-        this.sharedPref = sharedPref
     }
 
 
@@ -204,6 +200,111 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
             } catch (e : Throwable) {
                 Log.e("errorGetAllUsers", "Msg : ${e.localizedMessage}")
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getFollowers(username: String) {
+        listFollowers.value = ResultWrapper.loading()
+        launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    service.getListFollowers(username)
+                }
+
+                result.enqueue(object : Callback<List<DetailUserResponse>> {
+                    override fun onResponse(
+                        call: Call<List<DetailUserResponse>>,
+                        response: Response<List<DetailUserResponse>>
+                    ) {
+                        if (response.isSuccessful) {
+                            if (response.code() == HttpURLConnection.HTTP_OK) {
+                                response.body().let {
+                                    if (it != null) {
+                                        listFollowers.value = ResultWrapper.success(it)
+                                    } else {
+                                        listFollowers.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    }
+                                }
+                            }
+
+                            Log.d("successGetFollowers", response.body().toString())
+                        } else {
+                            Log.e("failedGetFollowers", response.toString())
+                            when(response.code()) {
+                                404 -> {
+                                    listFollowers.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                }
+                                else -> {
+                                    listFollowers.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
+                        Log.e("failureGetFollowers", "onResponse : ${t.localizedMessage}")
+                        listFollowers.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                    }
+
+                })
+
+            } catch (e : Throwable) {
+                Log.e("errorGetFollowers", "Msg : ${e.localizedMessage}")
+                e.printStackTrace()
+            }
+        }
+
+    }
+
+    fun getFollowing(username: String) {
+        listFollowing.value = ResultWrapper.loading()
+        launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    service.getListFollowing(username)
+                }
+
+                result.enqueue(object : Callback<List<DetailUserResponse>> {
+                    override fun onResponse(
+                        call: Call<List<DetailUserResponse>>,
+                        response: Response<List<DetailUserResponse>>
+                    ) {
+                        if (response.isSuccessful) {
+                            if (response.code() == HttpURLConnection.HTTP_OK) {
+                                response.body().let {
+                                    if (it != null) {
+                                        listFollowing.value = ResultWrapper.success(it)
+                                    } else {
+                                        listFollowing.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    }
+                                }
+                            }
+
+                            Log.d("successGetFollowing", response.body().toString())
+                        } else {
+                            Log.e("failedGetFollowing", response.toString())
+                            when(response.code()) {
+                                404 -> {
+                                    listFollowing.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                }
+                                else -> {
+                                    listFollowing.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
+                        Log.e("failureGetFollowing", "onResponse : ${t.localizedMessage}")
+                        listFollowing.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                    }
+
+                })
+
+            } catch (e : Throwable) {
+                Log.e("errorGetFollowing", "Msg : ${e.localizedMessage}")
                 e.printStackTrace()
             }
         }

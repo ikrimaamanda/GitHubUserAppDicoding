@@ -20,7 +20,7 @@ class RvAllUserAdapter : RecyclerView.Adapter<RvAllUserAdapter.RvSearchUserViewH
 
     private val listSearchUser = ArrayList<DetailUserResponse>()
 
-    fun addListSearch(list : List<DetailUserResponse>) {
+    fun addListUser(list : List<DetailUserResponse>) {
         this.listSearchUser.clear()
         this.listSearchUser.addAll(list)
     }
@@ -34,11 +34,6 @@ class RvAllUserAdapter : RecyclerView.Adapter<RvAllUserAdapter.RvSearchUserViewH
 
                 tvItemGithubUserUsername.text = listNow.username
 
-                // setting image
-//                val imgResource = itemView.context.resources.getIdentifier(listNow.avatar, null, itemView.context.packageName)
-//                val res = AppCompatResources.getDrawable(itemView.context, imgResource)
-//                civImageGithubUser.setImageDrawable(res)
-
                 Glide.with(itemView.context)
                     .load(listNow.avatarURL)
                     .listener(object : RequestListener<Drawable> {
@@ -48,7 +43,7 @@ class RvAllUserAdapter : RecyclerView.Adapter<RvAllUserAdapter.RvSearchUserViewH
                             target: com.bumptech.glide.request.target.Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            progressBar.setVisibility(View.GONE)
+                            progressBar.visibility = View.GONE
                             return false                        }
 
                         override fun onResourceReady(
@@ -58,7 +53,7 @@ class RvAllUserAdapter : RecyclerView.Adapter<RvAllUserAdapter.RvSearchUserViewH
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            progressBar.setVisibility(View.GONE)
+                            progressBar.visibility = View.GONE
                             return false                        }
 
                     })

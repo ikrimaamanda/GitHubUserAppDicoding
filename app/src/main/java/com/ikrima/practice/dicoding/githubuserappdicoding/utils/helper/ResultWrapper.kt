@@ -13,8 +13,6 @@ sealed class ResultWrapper<T> {
         fun <T> default(): ResultWrapper<T> = Default()
         fun <T> success(data: T): ResultWrapper<T> = Success(data)
         fun <T> empty(message: String?): ResultWrapper<T> = Empty(message)
-        fun <T> fail(throwable: Throwable, title: String, message: String?): ResultWrapper<T> =
-            Failure(throwable, title, message)
         fun <T> fail(title : String, message: String?): ResultWrapper<T> = Failure(null, title, message)
     }
 }

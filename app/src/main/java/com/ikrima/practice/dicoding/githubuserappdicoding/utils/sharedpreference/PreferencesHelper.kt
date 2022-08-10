@@ -10,14 +10,6 @@ class PreferencesHelper(context: Context) {
     private val sharedPref : SharedPreferences = context.getSharedPreferences(SharedPreferenceName, Context.MODE_PRIVATE)
     private val editor : SharedPreferences.Editor = sharedPref.edit()
 
-    fun putValueBoolean(key : String, value : Boolean) {
-        editor.putBoolean(key, value).apply()
-    }
-
-    fun getValueBoolean(key: String) : Boolean {
-        return sharedPref.getBoolean(key, true)
-    }
-
     fun putValueString(key: String, value: String) {
         editor.putString(key, value).apply()
     }
@@ -26,15 +18,4 @@ class PreferencesHelper(context: Context) {
         return sharedPref.getString(key, null)
     }
 
-    fun putValueInt(key: String, value: Int) {
-        editor.putInt(key, value).apply()
-    }
-
-    fun getValueInt(key: String) : Int {
-        return sharedPref.getInt(key, 0)
-    }
-
-    fun clear() {
-        editor.clear().apply()
-    }
 }

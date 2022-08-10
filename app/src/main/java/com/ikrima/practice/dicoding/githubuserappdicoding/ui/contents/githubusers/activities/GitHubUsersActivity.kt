@@ -33,7 +33,6 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
         settingViewModel()
 
-//        readJsonFile()
         subscibeGetAllUsers()
 
         subscribeSearchUser()
@@ -52,6 +51,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
+                    binding.emptyLayout.visibility = View.GONE
                     viewModel.searchUser(query)
                 } else {
                     Toast.makeText(this@GitHubUsersActivity, "Pencarian null", Toast.LENGTH_SHORT).show()
@@ -71,8 +71,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
     private fun settingViewModel() {
         viewModel.apply {
-            setGitHubApiServic(service)
-            setSharedPref(sharedPref)
+            setGitHubApiService(service)
             getAllUsers()
         }
     }
@@ -164,7 +163,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
             adapter = rvGithubUserAdapter
         }
 
-        rvGithubUserAdapter.addListSearch(users)
+        rvGithubUserAdapter.addListUser(users)
     }
 
 }

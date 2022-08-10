@@ -2,6 +2,6 @@ package com.ikrima.practice.dicoding.githubuserappdicoding.utils.sharedpreferenc
 
 class Constant {
     companion object {
-        const val prefTokenGithub = "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"
+        const val prefTokenGithub = "token github"
     }
 }
