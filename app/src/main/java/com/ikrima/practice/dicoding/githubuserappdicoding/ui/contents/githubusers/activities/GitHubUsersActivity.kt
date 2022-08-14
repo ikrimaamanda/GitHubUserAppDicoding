@@ -9,7 +9,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ikrima.practice.dicoding.githubuserappdicoding.R
@@ -20,12 +24,17 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubuser
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.FavoriteUserActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.GitHubUserViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWrapper
+import com.ikrima.practice.dicoding.githubuserappdicoding.utils.preferencesdatastore.SettingPreferencesDataStore
+import com.ikrima.practice.dicoding.githubuserappdicoding.utils.preferencesdatastore.ThemeViewModel
+import com.ikrima.practice.dicoding.githubuserappdicoding.utils.preferencesdatastore.ThemeViewModelFactory
 
 
 class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
 
     private lateinit var binding : ActivityGitHubUsersBinding
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setViewModel = ViewModelProvider(this)[GitHubUserViewModel::class.java]
@@ -41,6 +50,8 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         subscibeGetAllUsers()
 
         subscribeSearchUser()
+
+        changeThemeApp()
 
     }
 
@@ -183,6 +194,29 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         }
 
         rvGithubUserAdapter.addListUser(users)
+    }
+
+
+    private fun changeThemeApp() {
+
+        val pref = SettingPreferencesDataStore.getInstance(dataStore)
+
+        val themeViewModel = ViewModelProvider(this, ThemeViewModelFactory(pref))[ThemeViewModel::class.java]
+
+        themeViewModel.getThemeSetting().observe(this) { isDarkModeActive ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.switchTheme.isChecked = true
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.switchTheme.isChecked = false
+            }
+
+        }
+
+        binding.switchTheme.setOnCheckedChangeListener { _, p1 ->
+            themeViewModel.saveThemeSetting(p1)
+        }
     }
 
 }
