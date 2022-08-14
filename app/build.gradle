@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -15,7 +17,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "GITHUB_API_KEY", '"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"')
+//        buildConfigField("String", "GITHUB_API_KEY", '"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"')
 
     }
 
@@ -76,5 +78,11 @@ dependencies {
     // viewpager
     implementation 'com.google.android.material:material:1.6.1'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    // room
+    implementation("androidx.room:room-runtime:2.4.3")
+    kapt 'androidx.room:room-compiler:2.4.3'
 
 }

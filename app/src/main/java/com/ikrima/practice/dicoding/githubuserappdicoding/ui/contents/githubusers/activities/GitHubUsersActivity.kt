@@ -2,9 +2,11 @@ package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubuse
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -15,6 +17,7 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.base.BaseActivityViewM
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ActivityGitHubUsersBinding
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.adapters.RvAllUserAdapter
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.FavoriteUserActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.GitHubUserViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWrapper
 
@@ -30,6 +33,8 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        settingActionBar("Github User App")
 
         settingViewModel()
 
@@ -67,6 +72,20 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         })
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.favorite_user -> {
+                val i = Intent(this, FavoriteUserActivity::class.java)
+                startActivity(i)
+                false
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+
     }
 
     private fun settingViewModel() {

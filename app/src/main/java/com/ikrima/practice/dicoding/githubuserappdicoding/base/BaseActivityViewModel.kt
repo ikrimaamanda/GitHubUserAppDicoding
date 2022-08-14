@@ -19,4 +19,8 @@ abstract class BaseActivityViewModel<ActivityViewModel : ViewModel> : AppCompatA
         service = ApiConfig.getApiClientGitHubUser(this)!!.create(GitHubUserApiServices::class.java)
     }
 
+    protected fun settingActionBar(title : String) {
+        supportActionBar?.title = title
+    }
+
 }

@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.ikrima.practice.dicoding.githubuserappdicoding.BuildConfig
+import com.ikrima.practice.dicoding.githubuserappdicoding.data.retrofit.TokenAuthGithub
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ActivityMainBinding
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.activities.GitHubUsersActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.sharedpreference.Constant
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPref = PreferencesHelper(this)
-        sharedPref.putValueString(Constant.prefTokenGithub, BuildConfig.GITHUB_API_KEY)
+        sharedPref.putValueString(Constant.prefTokenGithub, TokenAuthGithub.tokenGithubUser)
 
         showLogo()
     }

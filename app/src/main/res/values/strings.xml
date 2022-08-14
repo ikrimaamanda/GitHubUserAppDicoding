@@ -16,4 +16,5 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="not_found_data">Data tidak ditemukan</string>
+    <string name="favorite">Favorite</string>
 </resources>

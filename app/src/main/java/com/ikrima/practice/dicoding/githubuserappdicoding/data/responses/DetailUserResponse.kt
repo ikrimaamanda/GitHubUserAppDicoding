@@ -1,72 +1,61 @@
 package com.ikrima.practice.dicoding.githubuserappdicoding.data.responses
 
-import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-data class DetailUserResponse(@SerializedName("login") val username : String? = "",
-                              val id : Int? = 0,
-                              @SerializedName("avatar_url") val avatarURL : String? = "",
-                              @SerializedName("followers_url") val followersUrl : String? = "",
-                              @SerializedName("following_url") val followingUrl : String? = "",
-                              val name : String? = "",
-                              val company : String? = "test",
-                              val blog : String? = "",
-                              val location : String?,
-                              val email : String? = "",
-                              val bio : String? = "",
-                              @SerializedName("twitter_username") val twitter : String? = "",
-                              @SerializedName("public_repos") val publicRepo : Int? = 0,
-                              val followers : Int? = 0,
-                              val following : Int? = 0
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int
-    )
+@Entity
+@Parcelize
+data class DetailUserResponse(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_fav_user")
+    var idFavUser : Int = 0,
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(username)
-        parcel.writeValue(id)
-        parcel.writeString(avatarURL)
-        parcel.writeString(followersUrl)
-        parcel.writeString(followingUrl)
-        parcel.writeString(name)
-        parcel.writeString(company)
-        parcel.writeString(blog)
-        parcel.writeString(location)
-        parcel.writeString(email)
-        parcel.writeString(bio)
-        parcel.writeString(twitter)
-        parcel.writeValue(publicRepo)
-        parcel.writeValue(followers)
-        parcel.writeValue(following)
-    }
+    @ColumnInfo(name = "username")
+    @SerializedName("login") val username : String? = "",
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    @ColumnInfo(name = "is_user")
+    val id : Int? = 0,
 
-    companion object CREATOR : Parcelable.Creator<DetailUserResponse> {
-        override fun createFromParcel(parcel: Parcel): DetailUserResponse {
-            return DetailUserResponse(parcel)
-        }
+    @ColumnInfo(name = "avatar_url")
+    @SerializedName("avatar_url") val avatarURL : String? = "",
 
-        override fun newArray(size: Int): Array<DetailUserResponse?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+    @ColumnInfo(name = "followers_url")
+    @SerializedName("followers_url") val followersUrl : String? = "",
+
+    @ColumnInfo(name = "following_url")
+    @SerializedName("following_url") val followingUrl : String? = "",
+
+    @ColumnInfo(name = "name")
+    val name : String? = "",
+
+    @ColumnInfo(name = "company")
+    val company : String? = "",
+
+    @ColumnInfo(name = "blog")
+    val blog : String? = "",
+
+    @ColumnInfo(name = "location")
+    val location : String?,
+
+    @ColumnInfo(name = "email")
+    val email : String? = "",
+
+    @ColumnInfo(name = "bio")
+    val bio : String? = "",
+
+    @ColumnInfo(name = "twitter_username")
+    @SerializedName("twitter_username") val twitter : String? = "",
+
+    @ColumnInfo(name = "public_repos")
+    @SerializedName("public_repos") val publicRepo : Int? = 0,
+
+    @ColumnInfo(name = "followers")
+    val followers : Int? = 0,
+
+    @ColumnInfo(name = "following")
+    val following : Int? = 0
+) : Parcelable

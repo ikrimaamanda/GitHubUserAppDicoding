@@ -6,5 +6,12 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
+        android:id="@+id/favorite_user"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="@string/favorite"
         app:showAsAction="collapseActionView|always" />
+
 </menu>

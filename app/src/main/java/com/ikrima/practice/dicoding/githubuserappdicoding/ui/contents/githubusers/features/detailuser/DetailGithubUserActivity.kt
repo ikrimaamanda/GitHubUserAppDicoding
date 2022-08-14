@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ikrima.practice.dicoding.githubuserappdicoding.R
 import com.ikrima.practice.dicoding.githubuserappdicoding.base.BaseActivityViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ActivityDetailGithubUserBinding
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.FavUserViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.GitHubUserViewModel
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.ViewModelFactory
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWrapper
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.uiutils.UIUtils.loadImage
 
@@ -20,6 +23,11 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
     private lateinit var list : DetailUserResponse
     private var username = ""
+
+    // to favorite user
+    private lateinit var favUserViewModel : FavUserViewModel
+    private var isFavUser = false
+    private var dataFavUser = ArrayList<DetailUserResponse>()
 
     companion object {
         @StringRes
@@ -36,6 +44,8 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         binding = ActivityDetailGithubUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        settingActionBar("Detail User")
+
         setParcelableData()
 
         settingViewModel()
@@ -46,9 +56,13 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
         sendDataToFragment()
 
+        onClickListener()
+
     }
 
     private fun setParcelableData() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         list = intent.getParcelableExtra<DetailUserResponse>("githubUserData") as DetailUserResponse
         username = list.username?:""
     }
@@ -58,6 +72,28 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
             setGitHubApiService(service)
             getDetailUser(username)
         }
+
+        favUserViewModel = obtainViewModel(this)
+
+        favUserViewModel.getFavUserByUsername(username).observe(this) { user ->
+            if (user != null) {
+                if (user.isEmpty()) {
+                    isFavUser = false
+                    binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24))
+                } else {
+                    list = user[0]
+                    isFavUser = true
+                    binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_24))
+                }
+            } else {
+                Toast.makeText(this, "User not found in room database", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun obtainViewModel(detailGithubUserActivity: DetailGithubUserActivity): FavUserViewModel {
+        val factory = ViewModelFactory.getInstance(detailGithubUserActivity.application)
+        return ViewModelProvider(detailGithubUserActivity, factory)[FavUserViewModel::class.java]
     }
 
     private fun subscribeDetailUser() {
@@ -83,17 +119,22 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
                         val data = it.data as DetailUserResponse
 
+                        val mutableListFavUser = mutableListOf<DetailUserResponse>()
+                        mutableListFavUser.add(data)
+
+                        dataFavUser = mutableListFavUser as ArrayList<DetailUserResponse>
+
                         civImageGithubUser.loadImage(data.avatarURL, this@DetailGithubUserActivity, progressBar)
 
                         tvName.text = data.name
                         tvUsername.text = data.username
 
-                        if (list.company == null || list.location == null) {
+                        if (data.company == null || data.location == null) {
                             tvCompany.text = String.format("-")
                             tvLocation.text = String.format("-")
                         } else {
-                            tvCompany.text = list.company
-                            tvLocation.text = list.location
+                            tvCompany.text = data.company
+                            tvLocation.text = data.location
                         }
 
                         tvAmountFollowers.text = String.format("${data.followers} followers")
@@ -126,6 +167,26 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     private fun sendDataToFragment() {
         FollowersFragment.USERNAME = list.username?:"Kosong"
         FollowingFragment.USERNAME = list.username?:"Kosong"
+    }
+
+    private fun onClickListener() {
+        binding.apply {
+
+            fabFavUser.setOnClickListener {
+                if (isFavUser) {
+                    favUserViewModel.unFavUser(list)
+                    Toast.makeText(this@DetailGithubUserActivity, "UnFav it!", Toast.LENGTH_SHORT).show()
+                    isFavUser = false
+                    fabFavUser.setImageDrawable(ContextCompat.getDrawable(this@DetailGithubUserActivity, R.drawable.ic_baseline_favorite_border_24))
+                } else {
+                    favUserViewModel.insertFavUser(dataFavUser[0])
+                    Toast.makeText(this@DetailGithubUserActivity, "Fav it!", Toast.LENGTH_SHORT).show()
+                    isFavUser = true
+                    fabFavUser.setImageDrawable(ContextCompat.getDrawable(this@DetailGithubUserActivity, R.drawable.ic_baseline_favorite_24))
+
+                }
+            }
+        }
     }
 
 }
