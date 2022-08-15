@@ -47,7 +47,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
         settingViewModel()
 
-        subscibeGetAllUsers()
+        subscribeGetAllUsers()
 
         subscribeSearchUser()
 
@@ -106,7 +106,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         }
     }
 
-    private fun subscibeGetAllUsers() {
+    private fun subscribeGetAllUsers() {
         binding.apply {
             viewModel.listAllUser.observe(this@GitHubUsersActivity) {
                 when(it) {
