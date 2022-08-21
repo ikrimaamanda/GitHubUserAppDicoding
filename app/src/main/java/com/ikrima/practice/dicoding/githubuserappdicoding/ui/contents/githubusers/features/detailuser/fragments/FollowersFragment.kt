@@ -1,4 +1,4 @@
-package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser
+package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser
+package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.LiveData

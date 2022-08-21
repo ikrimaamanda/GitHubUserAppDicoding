@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +20,7 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.base.BaseActivityViewM
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ActivityGitHubUsersBinding
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.adapters.RvAllUserAdapter
-import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.FavoriteUserActivity
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.activities.FavoriteActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.GitHubUserViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWrapper
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.preferencesdatastore.SettingPreferencesDataStore
@@ -88,7 +87,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.favorite_user -> {
-                val i = Intent(this, FavoriteUserActivity::class.java)
+                val i = Intent(this, FavoriteActivity::class.java)
                 startActivity(i)
                 false
             }
@@ -130,7 +129,6 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                         progressBar.visibility = View.GONE
 
                         val data = it.data as List<DetailUserResponse>
-                        Log.e("isi?", data.toString())
                         settingRvSearch(data)
                     }
                     else -> {

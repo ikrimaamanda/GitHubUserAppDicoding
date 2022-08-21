@@ -1,6 +1,7 @@
 package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
@@ -18,23 +19,31 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
     private lateinit var service : GitHubUserApiServices
 
-    val userData = MutableLiveData<ResultWrapper<Any>>()
-    val listSearchUser = MutableLiveData<ResultWrapper<List<Any>>>()
-    val listAllUser = MutableLiveData<ResultWrapper<List<Any>>>()
+    private val _userData = MutableLiveData<ResultWrapper<Any>>()
+    val userData : LiveData<ResultWrapper<Any>> = _userData
 
-    val listFollowers = MutableLiveData<ResultWrapper<List<Any>>>()
-    val listFollowing = MutableLiveData<ResultWrapper<List<Any>>>()
+    private val _listSearchUser = MutableLiveData<ResultWrapper<List<Any>>>()
+    val listSearchUser : LiveData<ResultWrapper<List<Any>>> = _listSearchUser
+
+    private val _listAllUser = MutableLiveData<ResultWrapper<List<Any>>>()
+    val listAllUser : LiveData<ResultWrapper<List<Any>>> = _listAllUser
+
+    private val _listFollowers = MutableLiveData<ResultWrapper<List<Any>>>()
+    val listFollowers : LiveData<ResultWrapper<List<Any>>> = _listFollowers
+
+    private val _listFollowing = MutableLiveData<ResultWrapper<List<Any>>>()
+    val listFollowing : LiveData<ResultWrapper<List<Any>>> = _listFollowing
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
 
 
     init {
-        userData.value = ResultWrapper.default()
-        listSearchUser.value = ResultWrapper.default()
-        listAllUser.value = ResultWrapper.default()
-        listFollowers.value = ResultWrapper.default()
-        listFollowing.value = ResultWrapper.default()
+        _userData.value = ResultWrapper.default()
+        _listSearchUser.value = ResultWrapper.default()
+        _listAllUser.value = ResultWrapper.default()
+        _listFollowers.value = ResultWrapper.default()
+        _listFollowing.value = ResultWrapper.default()
     }
 
 
@@ -47,7 +56,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
 
     fun getDetailUser(username : String) {
-        userData.value = ResultWrapper.loading()
+        _userData.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
@@ -63,9 +72,9 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             if (response.code() == HttpURLConnection.HTTP_OK) {
                                 response.body().let {
                                     if (it != null) {
-                                        userData.value = ResultWrapper.success(it)
+                                        _userData.value = ResultWrapper.success(it)
                                     } else {
-                                        userData.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                        _userData.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                     }
                                 }
                             }
@@ -75,10 +84,10 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             Log.e("failedGetDetailUser", response.toString())
                             when(response.code()) {
                                 404 -> {
-                                    userData.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    _userData.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                 }
                                 else -> {
-                                    userData.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                    _userData.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
                                 }
                             }
                         }
@@ -86,7 +95,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
                     override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
                         Log.e("failureGetDetailUser", "onResponse : ${t.localizedMessage}")
-                        userData.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                        _userData.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
                     }
 
                 })
@@ -100,7 +109,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
 
     fun searchUser(username : String) {
-        listSearchUser.value = ResultWrapper.loading()
+        _listSearchUser.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
@@ -116,9 +125,9 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             if (response.code() == HttpURLConnection.HTTP_OK) {
                                 response.body().let {
                                     if (it != null) {
-                                        listSearchUser.value = ResultWrapper.success(it.items)
+                                        _listSearchUser.value = ResultWrapper.success(it.items)
                                     } else {
-                                        listSearchUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                        _listSearchUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                     }
                                 }
                             }
@@ -128,10 +137,10 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             Log.e("failedSearchUser", response.toString())
                             when(response.code()) {
                                 404 -> {
-                                    listSearchUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    _listSearchUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                 }
                                 else -> {
-                                    listSearchUser.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                    _listSearchUser.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
                                 }
                             }
                         }
@@ -139,7 +148,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
                     override fun onFailure(call: Call<SearchUserResponse>, t: Throwable) {
                         Log.e("failureSearchUser", "onResponse : ${t.localizedMessage}")
-                        listSearchUser.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                        _listSearchUser.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
                     }
 
                 })
@@ -154,7 +163,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
 
     fun getAllUsers() {
-        listAllUser.value = ResultWrapper.loading()
+        _listAllUser.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
@@ -170,9 +179,9 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             if (response.code() == HttpURLConnection.HTTP_OK) {
                                 response.body().let {
                                     if (it != null) {
-                                        listAllUser.value = ResultWrapper.success(it)
+                                        _listAllUser.value = ResultWrapper.success(it)
                                     } else {
-                                        listAllUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                        _listAllUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                     }
                                 }
                             }
@@ -182,10 +191,10 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             Log.e("failedGetAllUsers", response.toString())
                             when(response.code()) {
                                 404 -> {
-                                    listAllUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    _listAllUser.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                 }
                                 else -> {
-                                    listAllUser.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                    _listAllUser.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
                                 }
                             }
                         }
@@ -193,7 +202,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
                     override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
                         Log.e("failureGetAllusers", "onResponse : ${t.localizedMessage}")
-                        listAllUser.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                        _listAllUser.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
                     }
 
                 })
@@ -206,7 +215,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
     }
 
     fun getFollowers(username: String, type : String) {
-        listFollowers.value = ResultWrapper.loading()
+        _listFollowers.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
@@ -222,9 +231,9 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             if (response.code() == HttpURLConnection.HTTP_OK) {
                                 response.body().let {
                                     if (it != null) {
-                                        listFollowers.value = ResultWrapper.success(it)
+                                        _listFollowers.value = ResultWrapper.success(it)
                                     } else {
-                                        listFollowers.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                        _listFollowers.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                     }
                                 }
                             }
@@ -234,10 +243,10 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             Log.e("failedGetFollowers", response.toString())
                             when(response.code()) {
                                 404 -> {
-                                    listFollowers.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    _listFollowers.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                 }
                                 else -> {
-                                    listFollowers.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                    _listFollowers.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
                                 }
                             }
                         }
@@ -245,7 +254,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
                     override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
                         Log.e("failureGetFollowers", "onResponse : ${t.localizedMessage}")
-                        listFollowers.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                        _listFollowers.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
                     }
 
                 })
@@ -259,7 +268,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
     }
 
     fun getFollowing(username: String, type : String) {
-        listFollowing.value = ResultWrapper.loading()
+        _listFollowing.value = ResultWrapper.loading()
         launch {
             try {
                 val result = withContext(Dispatchers.IO) {
@@ -275,9 +284,9 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             if (response.code() == HttpURLConnection.HTTP_OK) {
                                 response.body().let {
                                     if (it != null) {
-                                        listFollowing.value = ResultWrapper.success(it)
+                                        _listFollowing.value = ResultWrapper.success(it)
                                     } else {
-                                        listFollowing.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                        _listFollowing.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                     }
                                 }
                             }
@@ -287,10 +296,10 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                             Log.e("failedGetFollowing", response.toString())
                             when(response.code()) {
                                 404 -> {
-                                    listFollowing.value = ResultWrapper.empty("Data Tidak Ditemukan")
+                                    _listFollowing.value = ResultWrapper.empty("Data Tidak Ditemukan")
                                 }
                                 else -> {
-                                    listFollowing.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
+                                    _listFollowing.value = ResultWrapper.fail(title = "Server dalam perbaikan", "")
                                 }
                             }
                         }
@@ -298,7 +307,7 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
 
                     override fun onFailure(call: Call<List<DetailUserResponse>>, t: Throwable) {
                         Log.e("failureGetFollowing", "onResponse : ${t.localizedMessage}")
-                        listFollowing.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
+                        _listFollowing.value = ResultWrapper.fail(title = "Gagal mendapatkan data", "")
                     }
 
                 })
@@ -308,6 +317,15 @@ class GitHubUserViewModel : ViewModel(), CoroutineScope {
                 e.printStackTrace()
             }
         }
+    }
+
+
+    /*
+    * This method to cancel coroutine when activity/fragment is destroyed
+    * */
+    override fun onCleared() {
+        Job().cancel()
+        super.onCleared()
     }
 
 

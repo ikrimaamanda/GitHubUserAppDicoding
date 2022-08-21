@@ -6,8 +6,8 @@ import android.content.SharedPreferences
 
 class PreferencesHelper(context: Context) {
 
-    private val SharedPreferenceName = "sharedpreferencegithubuserdicoding"
-    private val sharedPref : SharedPreferences = context.getSharedPreferences(SharedPreferenceName, Context.MODE_PRIVATE)
+    private val sharedPreferenceName = "sharedpreferencegithubuserdicoding"
+    private val sharedPref : SharedPreferences = context.getSharedPreferences(sharedPreferenceName, Context.MODE_PRIVATE)
     private val editor : SharedPreferences.Editor = sharedPref.edit()
 
     fun putValueString(key: String, value: String) {

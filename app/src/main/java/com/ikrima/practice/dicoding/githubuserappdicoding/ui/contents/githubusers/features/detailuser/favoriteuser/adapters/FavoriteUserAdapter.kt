@@ -1,4 +1,4 @@
-package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser
+package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ItemGithubUserBinding
-import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.DetailGithubUserActivity
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.activities.DetailGithubUserActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.FavoriteUserDiffCallback
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.uiutils.UIUtils.loadImage
 

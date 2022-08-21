@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ItemGithubUserBinding
-import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.DetailGithubUserActivity
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.activities.DetailGithubUserActivity
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.uiutils.UIUtils.loadImage
 
 

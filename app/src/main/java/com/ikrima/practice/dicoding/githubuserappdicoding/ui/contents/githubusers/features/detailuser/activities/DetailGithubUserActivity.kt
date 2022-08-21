@@ -1,4 +1,4 @@
-package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser
+package com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.activities
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -11,7 +11,10 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.R
 import com.ikrima.practice.dicoding.githubuserappdicoding.base.BaseActivityViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.responses.DetailUserResponse
 import com.ikrima.practice.dicoding.githubuserappdicoding.databinding.ActivityDetailGithubUserBinding
-import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.FavUserViewModel
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.adapters.DetailUserPagerAdapter
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.favoriteuser.viewmodel.FavUserViewModel
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.fragments.FollowersFragment
+import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.fragments.FollowingFragment
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.GitHubUserViewModel
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.viewmodel.ViewModelFactory
 import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWrapper
@@ -78,12 +81,10 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         favUserViewModel.getFavUserByUsername(username).observe(this) { user ->
             if (user != null) {
                 if (user.isEmpty()) {
-                    isFavUser = false
-                    binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24))
+                    settingFABFav(false)
                 } else {
                     list = user[0]
-                    isFavUser = true
-                    binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_24))
+                    settingFABFav(true)
                 }
             } else {
                 Toast.makeText(this, "User not found in room database", Toast.LENGTH_SHORT).show()
@@ -176,16 +177,24 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                 if (isFavUser) {
                     favUserViewModel.unFavUser(list)
                     Toast.makeText(this@DetailGithubUserActivity, "UnFav it!", Toast.LENGTH_SHORT).show()
-                    isFavUser = false
-                    fabFavUser.setImageDrawable(ContextCompat.getDrawable(this@DetailGithubUserActivity, R.drawable.ic_baseline_favorite_border_24))
+                    settingFABFav(false)
                 } else {
                     favUserViewModel.insertFavUser(dataFavUser[0])
                     Toast.makeText(this@DetailGithubUserActivity, "Fav it!", Toast.LENGTH_SHORT).show()
-                    isFavUser = true
-                    fabFavUser.setImageDrawable(ContextCompat.getDrawable(this@DetailGithubUserActivity, R.drawable.ic_baseline_favorite_24))
-
+                    settingFABFav(true)
                 }
             }
+        }
+    }
+
+
+    private fun settingFABFav(isFav : Boolean) {
+        if (isFav) {
+            isFavUser = isFav
+            binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_24))
+        } else {
+            isFavUser = isFav
+            binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24))
         }
     }
 

@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.contents.githubusers.features.detailuser.favoriteuser.FavoriteUserActivity">
+    tools:context=".ui.contents.githubusers.features.detailuser.favoriteuser.activities.FavoriteActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_github_users"
+        android:id="@+id/rv_fav_github_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_github_user"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/empty_layout"
+        android:id="@+id/empty_layout_fav_user"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
