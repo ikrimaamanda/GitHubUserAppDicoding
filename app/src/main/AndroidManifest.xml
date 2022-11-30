@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.ikrima.practice.dicoding.githubuserappdicoding">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +18,10 @@
         android:theme="@style/Theme.GitHubUserAppDicoding"
         tools:targetApi="31">
         <activity
-            android:name=".ui.contents.githubusers.activities.DetailGithubUserActivity"
+            android:name=".ui.contents.githubusers.features.detailuser.favoriteuser.activities.FavoriteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.contents.githubusers.features.detailuser.activities.DetailGithubUserActivity"
             android:exported="false" />
         <activity
             android:name=".ui.contents.githubusers.activities.GitHubUsersActivity"
