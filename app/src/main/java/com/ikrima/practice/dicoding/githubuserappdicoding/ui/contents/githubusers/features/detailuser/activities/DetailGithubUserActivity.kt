@@ -22,23 +22,15 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.utils.uiutils.UIUtils.
 
 class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
-    private lateinit var binding : ActivityDetailGithubUserBinding
+    private lateinit var binding: ActivityDetailGithubUserBinding
 
-    private lateinit var list : DetailUserResponse
+    private lateinit var list: DetailUserResponse
     private var username = ""
 
     // to favorite user
-    private lateinit var favUserViewModel : FavUserViewModel
+    private lateinit var favUserViewModel: FavUserViewModel
     private var isFavUser = false
     private var dataFavUser = ArrayList<DetailUserResponse>()
-
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.followers,
-            R.string.following
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setViewModel = ViewModelProvider(this)[GitHubUserViewModel::class.java]
@@ -67,7 +59,7 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         list = intent.getParcelableExtra<DetailUserResponse>("githubUserData") as DetailUserResponse
-        username = list.username?:""
+        username = list.username ?: ""
     }
 
     private fun settingViewModel() {
@@ -100,17 +92,20 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     private fun subscribeDetailUser() {
         binding.apply {
             viewModel.userData.observe(this@DetailGithubUserActivity) {
-                when(it) {
+                when (it) {
                     is ResultWrapper.Default -> {
                         // empty
                     }
                     is ResultWrapper.Empty -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this@DetailGithubUserActivity, it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@DetailGithubUserActivity, it.message, Toast.LENGTH_SHORT
+                        ).show()
                     }
                     is ResultWrapper.Failure -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this@DetailGithubUserActivity, it.title, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DetailGithubUserActivity, it.title, Toast.LENGTH_SHORT)
+                            .show()
                     }
                     is ResultWrapper.Loading -> {
                         progressBar.visibility = View.VISIBLE
@@ -125,7 +120,9 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
                         dataFavUser = mutableListFavUser as ArrayList<DetailUserResponse>
 
-                        civImageGithubUser.loadImage(data.avatarURL, this@DetailGithubUserActivity, progressBar)
+                        civImageGithubUser.loadImage(
+                            data.avatarURL, this@DetailGithubUserActivity, progressBar
+                        )
 
                         tvName.text = data.name
                         tvUsername.text = data.username
@@ -144,7 +141,11 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                     }
                     else -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this@DetailGithubUserActivity, "Server dalam perbaikan", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@DetailGithubUserActivity,
+                            "Server dalam perbaikan",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -166,8 +167,8 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     }
 
     private fun sendDataToFragment() {
-        FollowersFragment.USERNAME = list.username?:"Kosong"
-        FollowingFragment.USERNAME = list.username?:"Kosong"
+        FollowersFragment.USERNAME = list.username ?: "Kosong"
+        FollowingFragment.USERNAME = list.username ?: "Kosong"
     }
 
     private fun onClickListener() {
@@ -176,11 +177,13 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
             fabFavUser.setOnClickListener {
                 if (isFavUser) {
                     favUserViewModel.unFavUser(list)
-                    Toast.makeText(this@DetailGithubUserActivity, "UnFav it!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailGithubUserActivity, "UnFav it!", Toast.LENGTH_SHORT)
+                        .show()
                     settingFABFav(false)
                 } else {
                     favUserViewModel.insertFavUser(dataFavUser[0])
-                    Toast.makeText(this@DetailGithubUserActivity, "Fav it!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailGithubUserActivity, "Fav it!", Toast.LENGTH_SHORT)
+                        .show()
                     settingFABFav(true)
                 }
             }
@@ -188,14 +191,30 @@ class DetailGithubUserActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     }
 
 
-    private fun settingFABFav(isFav : Boolean) {
+    private fun settingFABFav(isFav: Boolean) {
         if (isFav) {
             isFavUser = isFav
-            binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_24))
+            binding.fabFavUser.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this, R.drawable.ic_baseline_favorite_24
+                )
+            )
         } else {
             isFavUser = isFav
-            binding.fabFavUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24))
+            binding.fabFavUser.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this, R.drawable.ic_baseline_favorite_border_24
+                )
+            )
         }
+    }
+
+
+    companion object {
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.followers, R.string.following
+        )
     }
 
 }

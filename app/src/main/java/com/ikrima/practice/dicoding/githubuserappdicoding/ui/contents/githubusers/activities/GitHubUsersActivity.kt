@@ -31,7 +31,7 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.utils.preferencesdatas
 class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
 
-    private lateinit var binding : ActivityGitHubUsersBinding
+    private lateinit var binding: ActivityGitHubUsersBinding
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -42,7 +42,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        settingActionBar("Github User App")
+        settingActionBar(resources.getString(R.string.title_app))
 
         settingViewModel()
 
@@ -69,7 +69,8 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                     binding.emptyLayout.visibility = View.GONE
                     viewModel.searchUser(query)
                 } else {
-                    Toast.makeText(this@GitHubUsersActivity, "Pencarian null", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@GitHubUsersActivity, "Pencarian null", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 searchView.clearFocus()
                 return true
@@ -85,7 +86,7 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.favorite_user -> {
                 val i = Intent(this, FavoriteActivity::class.java)
                 startActivity(i)
@@ -108,19 +109,21 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     private fun subscribeGetAllUsers() {
         binding.apply {
             viewModel.listAllUser.observe(this@GitHubUsersActivity) {
-                when(it) {
+                when (it) {
                     is ResultWrapper.Default -> {
 
                     }
                     is ResultWrapper.Empty -> {
                         progressBar.visibility = View.GONE
 
-                        Toast.makeText(this@GitHubUsersActivity, it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@GitHubUsersActivity, it.message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                     is ResultWrapper.Failure -> {
                         progressBar.visibility = View.GONE
 
-                        Toast.makeText(this@GitHubUsersActivity, it.title, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@GitHubUsersActivity, it.title, Toast.LENGTH_SHORT)
+                            .show()
                     }
                     is ResultWrapper.Loading -> {
                         progressBar.visibility = View.VISIBLE
@@ -133,7 +136,9 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                     }
                     else -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this@GitHubUsersActivity, "Server dalam perbaikan", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@GitHubUsersActivity, "Server dalam perbaikan", Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -144,19 +149,21 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
     private fun subscribeSearchUser() {
         binding.apply {
             viewModel.listSearchUser.observe(this@GitHubUsersActivity) {
-                when(it) {
+                when (it) {
                     is ResultWrapper.Default -> {
 
                     }
                     is ResultWrapper.Empty -> {
                         progressBar.visibility = View.GONE
 
-                        Toast.makeText(this@GitHubUsersActivity, it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@GitHubUsersActivity, it.message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                     is ResultWrapper.Failure -> {
                         progressBar.visibility = View.GONE
 
-                        Toast.makeText(this@GitHubUsersActivity, it.title, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@GitHubUsersActivity, it.title, Toast.LENGTH_SHORT)
+                            .show()
                     }
                     is ResultWrapper.Loading -> {
                         progressBar.visibility = View.VISIBLE
@@ -177,7 +184,9 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
                     }
                     else -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this@GitHubUsersActivity, "Server dalam perbaikan", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@GitHubUsersActivity, "Server dalam perbaikan", Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -199,7 +208,8 @@ class GitHubUsersActivity : BaseActivityViewModel<GitHubUserViewModel>() {
 
         val pref = SettingPreferencesDataStore.getInstance(dataStore)
 
-        val themeViewModel = ViewModelProvider(this, ThemeViewModelFactory(pref))[ThemeViewModel::class.java]
+        val themeViewModel =
+            ViewModelProvider(this, ThemeViewModelFactory(pref))[ThemeViewModel::class.java]
 
         themeViewModel.getThemeSetting().observe(this) { isDarkModeActive ->
             if (isDarkModeActive) {

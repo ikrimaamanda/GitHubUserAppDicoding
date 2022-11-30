@@ -6,9 +6,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.fragments.FollowersFragment
 import com.ikrima.practice.dicoding.githubuserappdicoding.ui.contents.githubusers.features.detailuser.fragments.FollowingFragment
 
-class DetailUserPagerAdapter(activity : AppCompatActivity) : FragmentStateAdapter(activity) {
+class DetailUserPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = ITEM_COUNT
 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
@@ -17,5 +17,9 @@ class DetailUserPagerAdapter(activity : AppCompatActivity) : FragmentStateAdapte
             1 -> fragment = FollowingFragment()
         }
         return fragment as Fragment
+    }
+
+    companion object {
+        private const val ITEM_COUNT = 2
     }
 }

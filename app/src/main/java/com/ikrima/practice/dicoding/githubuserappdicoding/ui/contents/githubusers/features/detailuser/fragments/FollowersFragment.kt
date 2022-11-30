@@ -20,14 +20,12 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWra
 class FollowersFragment : Fragment() {
 
 
-    private lateinit var binding : FragmentFollowersBinding
-    private lateinit var viewModel : GitHubUserViewModel
-    private lateinit var service : GitHubUserApiServices
+    private var _binding: FragmentFollowersBinding? = null
+    private val binding get() = _binding!!
 
+    private lateinit var viewModel: GitHubUserViewModel
+    private lateinit var service: GitHubUserApiServices
 
-    companion object {
-        var USERNAME = ""
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +34,19 @@ class FollowersFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentFollowersBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFollowersBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,10 +56,9 @@ class FollowersFragment : Fragment() {
     }
 
 
-
     private fun settingViewModel() {
         viewModel = ViewModelProvider(this)[GitHubUserViewModel::class.java]
-        service = ApiConfig.getApiClientGitHubUser(requireContext())!!.create(GitHubUserApiServices::class.java)
+        service = ApiConfig.getApiClientGitHubUser()!!.create(GitHubUserApiServices::class.java)
 
         viewModel.apply {
             setGitHubApiService(service)
@@ -67,7 +70,7 @@ class FollowersFragment : Fragment() {
     private fun subscribeFollowers() {
         binding.apply {
             viewModel.listFollowers.observe(viewLifecycleOwner) {
-                when(it) {
+                when (it) {
                     is ResultWrapper.Default -> {
 
                     }
@@ -100,7 +103,9 @@ class FollowersFragment : Fragment() {
                     }
                     else -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Server dalam perbaikan", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(), "Server dalam perbaikan", Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -108,7 +113,7 @@ class FollowersFragment : Fragment() {
         }
     }
 
-    private fun setRvFollowers(followers: List<DetailUserResponse>){
+    private fun setRvFollowers(followers: List<DetailUserResponse>) {
         val rvGithubUserAdapter = RvAllUserAdapter()
         binding.rvGithubUsers.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -116,6 +121,11 @@ class FollowersFragment : Fragment() {
         }
 
         rvGithubUserAdapter.addListUser(followers)
+    }
+
+
+    companion object {
+        var USERNAME = ""
     }
 
 }

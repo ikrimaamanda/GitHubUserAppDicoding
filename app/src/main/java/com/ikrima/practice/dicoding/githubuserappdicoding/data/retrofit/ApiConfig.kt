@@ -1,6 +1,5 @@
 package com.ikrima.practice.dicoding.githubuserappdicoding.data.retrofit
 
-import android.content.Context
 import com.ikrima.practice.dicoding.githubuserappdicoding.BuildConfig
 import com.ikrima.practice.dicoding.githubuserappdicoding.data.remote.UrlEndPoint
 import okhttp3.OkHttpClient
@@ -24,11 +23,11 @@ object ApiConfig {
         }
     }
 
-    fun getApiClientGitHubUser(context : Context) : Retrofit? {
+    fun getApiClientGitHubUser(): Retrofit? {
         if (retrofitAPIGitHubUser == null) {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(providenHttpLoggingInterceptor())
-                .addInterceptor(HeaderInterceptor(context))
+                .addInterceptor(HeaderInterceptor())
                 .connectTimeout(7000, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
                 .writeTimeout(1, TimeUnit.MINUTES)

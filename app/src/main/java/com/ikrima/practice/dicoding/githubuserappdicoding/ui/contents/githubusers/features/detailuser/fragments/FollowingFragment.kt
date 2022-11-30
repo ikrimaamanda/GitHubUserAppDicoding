@@ -19,7 +19,10 @@ import com.ikrima.practice.dicoding.githubuserappdicoding.utils.helper.ResultWra
 
 class FollowingFragment : Fragment() {
 
-    private lateinit var binding : FragmentFollowingBinding
+
+    private var _binding : FragmentFollowingBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel : GitHubUserViewModel
     private lateinit var service : GitHubUserApiServices
 
@@ -39,7 +42,7 @@ class FollowingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentFollowingBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFollowingBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -52,7 +55,7 @@ class FollowingFragment : Fragment() {
 
     private fun settingViewModel() {
         viewModel = ViewModelProvider(this)[GitHubUserViewModel::class.java]
-        service = ApiConfig.getApiClientGitHubUser(requireContext())!!.create(GitHubUserApiServices::class.java)
+        service = ApiConfig.getApiClientGitHubUser()!!.create(GitHubUserApiServices::class.java)
 
         viewModel.apply {
             setGitHubApiService(service)

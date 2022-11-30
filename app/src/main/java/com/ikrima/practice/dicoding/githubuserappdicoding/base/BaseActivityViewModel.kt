@@ -16,7 +16,7 @@ abstract class BaseActivityViewModel<ActivityViewModel : ViewModel> : AppCompatA
         super.onCreate(savedInstanceState)
 
         viewModel = setViewModel!!
-        service = ApiConfig.getApiClientGitHubUser(this)!!.create(GitHubUserApiServices::class.java)
+        service = ApiConfig.getApiClientGitHubUser()!!.create(GitHubUserApiServices::class.java)
     }
 
     protected fun settingActionBar(title : String) {
